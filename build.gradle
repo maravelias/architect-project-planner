@@ -2,6 +2,7 @@ plugins {
     id 'io.jmix' version '2.7.3'
     id 'java'
     id 'org.jetbrains.gradle.plugin.idea-ext' version '1.1.9'
+    id 'org.sonarqube' version '7.2.2.6593'
 }
 
 apply plugin: 'org.springframework.boot'
@@ -55,6 +56,16 @@ configurations.implementation {
 
 test {
     useJUnitPlatform()
+}
+
+sonar {
+    properties {
+        property "sonar.projectKey", "archplan"
+        property "sonar.projectName", "ArchitectProjectPlaner"
+        property "sonar.host.url", "http://192.168.57.10:9000"
+        property "sonar.token", "sqp_655a001f9bd643204ba8cf84fbc1beed1ca259ea"
+        property('sonar.cpd.exclusions', ['**/entity/**/*.java'])
+    }
 }
 
 idea {
