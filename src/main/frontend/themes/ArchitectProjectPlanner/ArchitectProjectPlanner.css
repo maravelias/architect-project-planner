@@ -1,1 +1,100 @@
-/* Define your styles here */
+html {
+
+	/* ===============================
+	   Typography & Layout (unchanged)
+	   =============================== */
+
+	--lumo-font-size: 1rem;
+	--lumo-font-size-xxxl: 1.75rem;
+	--lumo-font-size-xxl: 1.375rem;
+	--lumo-font-size-xl: 1.125rem;
+	--lumo-font-size-l: 1rem;
+	--lumo-font-size-m: 0.875rem;
+	--lumo-font-size-s: 0.8125rem;
+	--lumo-font-size-xs: 0.75rem;
+	--lumo-font-size-xxs: 0.6875rem;
+
+	--lumo-line-height-m: 1.45;
+	--lumo-line-height-s: 1.3;
+	--lumo-line-height-xs: 1.15;
+
+	--lumo-border-radius: 0.375em; /* Slightly sharper for data UIs */
+
+	--lumo-font-family: Corbel, "Lucida Grande", "Lucida Sans Unicode",
+	"Lucida Sans", "DejaVu Sans", "Bitstream Vera Sans",
+	"Liberation Sans", Verdana, "Verdana Ref", sans-serif;
+
+	/* ===============================
+	   Base & Surface Colors
+	   =============================== */
+
+	--lumo-base-color: #F9FAFB;        /* Main app background */
+	--lumo-tint-5pct: #FFFFFF;         /* Cards, dialogs */
+	--lumo-shade-5pct: #F3F4F6;        /* Table zebra rows */
+	--lumo-shade-10pct: #E5E7EB;       /* Borders / dividers */
+	--lumo-shade-20pct: #D1D5DB;       /* Stronger grid lines */
+
+	/* ===============================
+	   Primary Brand (Blue)
+	   =============================== */
+
+	--lumo-primary-color: hsl(221, 83%, 53%); /* #2563EB */
+	--lumo-primary-text-color: #2563EB;
+	--lumo-primary-color-50pct: rgba(37, 99, 235, 0.45);
+	--lumo-primary-color-10pct: rgba(37, 99, 235, 0.12);
+
+	/* Selection & focus (important for grids) */
+	--lumo-primary-contrast-color: #FFFFFF;
+
+	/* ===============================
+	   Text Colors (Optimized for Density)
+	   =============================== */
+
+	--lumo-header-text-color: #111827;              /* Column headers */
+	--lumo-body-text-color: rgba(31, 41, 55, 0.96); /* Cell text */
+	--lumo-secondary-text-color: rgba(55, 65, 81, 0.8);
+	--lumo-tertiary-text-color: rgba(107, 114, 128, 0.65);
+	--lumo-disabled-text-color: rgba(156, 163, 175, 0.6);
+
+	/* ===============================
+	   Form States
+	   =============================== */
+
+	/* Error */
+	--lumo-error-color: hsl(0, 84%, 60%); /* #EF4444 */
+	--lumo-error-text-color: #B91C1C;
+	--lumo-error-color-50pct: rgba(239, 68, 68, 0.45);
+	--lumo-error-color-10pct: rgba(239, 68, 68, 0.12);
+
+	/* Success */
+	--lumo-success-color: hsl(160, 84%, 39%); /* #10B981 */
+	--lumo-success-text-color: #047857;
+	--lumo-success-color-50pct: rgba(16, 185, 129, 0.45);
+	--lumo-success-color-10pct: rgba(16, 185, 129, 0.12);
+
+	/* ===============================
+	   Data UI Enhancements
+	   =============================== */
+
+	/* Row hover */
+	--lumo-hover-color: rgba(37, 99, 235, 0.06);
+
+	/* Active / selected row */
+	--lumo-selected-color: rgba(37, 99, 235, 0.12);
+
+	/* Focus ring */
+	--lumo-focus-color: rgba(37, 99, 235, 0.45);
+}
+
+vaadin-grid::part(header-cell) {
+	font-weight: 600;
+}
+
+vaadin-grid::part(cell) {
+	padding: 0.5em 0.75em;
+}
+
+vaadin-text-field,
+vaadin-combo-box {
+	background-color: var(--lumo-tint-5pct);
+}
