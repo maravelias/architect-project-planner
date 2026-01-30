@@ -42,14 +42,17 @@
                      ariaLabel="msg://navigation.ariaLabel">
                     <listMenu id="menu"/>
                 </nav>
+				<footer id="footer" classNames="jmix-main-view-footer">
+					<userIndicator id="userIndicator"/>
+					<button id="logoutButton"
+							action="logoutAction"
+							classNames="jmix-logout-button"/>
+				</footer>
             </section>
         </drawerLayout>
         <initialLayout id="initialLayout" classNames="jmix-initial-layout">
             <div classNames="jmix-initial-layout-content">
-                <h1 text="msg://applicationTitle.text"
-                    classNames="jmix-initial-layout-title"/>
-                <image resource="public/images/logo.png"
-                       classNames="jmix-initial-layout-logo"/>
+                <image resource="public/images/logo.png"/>
             </div>
             <!--
                 This is the work area - central part of the view.
