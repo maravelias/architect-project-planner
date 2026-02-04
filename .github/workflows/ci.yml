@@ -2,8 +2,7 @@ name: CI-Tests
 
 on:
   push:
-    branches:
-      - master
+  pull_request:
 
 permissions:
   contents: read
@@ -31,9 +30,6 @@ jobs:
           path: |
             build/reports/tests/test
             build/test-results/test  
-
-      - name: OSSF Scorecard action
-        uses: ossf/scorecard-action@v2.4.3
 
       - name: Publish Test Results
         if: always()
