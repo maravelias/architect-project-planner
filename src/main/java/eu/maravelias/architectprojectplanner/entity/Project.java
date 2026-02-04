@@ -8,7 +8,6 @@ import io.jmix.core.DeletePolicy;
 import io.jmix.core.annotation.DeletedBy;
 import io.jmix.core.annotation.DeletedDate;
 import io.jmix.core.entity.annotation.JmixGeneratedValue;
-import io.jmix.core.entity.annotation.OnDeleteInverse;
 import io.jmix.core.metamodel.annotation.InstanceName;
 import io.jmix.core.metamodel.annotation.JmixEntity;
 import jakarta.persistence.Column;
@@ -58,7 +57,7 @@ public class Project {
 
     @DeletedDate @Column(name = "DELETED_DATE") private OffsetDateTime deletedDate;
 
-    @OnDeleteInverse(DeletePolicy.CASCADE) @JoinColumn(name = "CLIENT_ID", nullable = false) @ManyToOne(fetch = FetchType.LAZY, optional = false) private Client client;
+    @JoinColumn(name = "CLIENT_ID", nullable = false) @ManyToOne(fetch = FetchType.LAZY, optional = false) private Client client;
 
     public Status getStatus() {return status == null ? null : Status.fromId(status);}
 

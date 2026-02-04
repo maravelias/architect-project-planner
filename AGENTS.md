@@ -54,6 +54,7 @@ You are a senior developer working on a Jmix + Spring Boot + Vaadin Flow (Vaadin
 - **FlowUI views**: Each `@ViewController` has a matching XML descriptor under `src/main/resources/eu/.../view/...`.
 - **Data access**: Use Jmix data APIs and Liquibase for schema changes; avoid ad-hoc SQL migrations.
 - **Security**: Role definitions are in code. Keep UI/menu IDs in sync with view IDs.
+- **Entity changes**: Whenever entities change, update or add the corresponding tests.
 
 ## Sensitive Defaults (Do Not Use in Production)
 - `application-dev.properties` includes a PostgreSQL password and OIDC client secret placeholders.

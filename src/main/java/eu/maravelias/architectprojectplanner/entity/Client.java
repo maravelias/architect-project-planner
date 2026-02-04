@@ -9,7 +9,6 @@ import io.jmix.core.annotation.DeletedBy;
 import io.jmix.core.annotation.DeletedDate;
 import io.jmix.core.entity.annotation.JmixGeneratedValue;
 import io.jmix.core.entity.annotation.OnDelete;
-import io.jmix.core.entity.annotation.OnDeleteInverse;
 import io.jmix.core.metamodel.annotation.Composition;
 import io.jmix.core.metamodel.annotation.InstanceName;
 import io.jmix.core.metamodel.annotation.JmixEntity;
@@ -33,7 +32,7 @@ public class Client {
 
     @InstanceName @Column(name = "NAME", nullable = false) @NotNull private String name;
 
-    @OnDeleteInverse(DeletePolicy.UNLINK) @OnDelete(DeletePolicy.CASCADE) @Composition @OneToMany(mappedBy = "client") private List<Project> projects;
+    @OnDelete(DeletePolicy.CASCADE) @Composition @OneToMany(mappedBy = "client") private List<Project> projects;
 
     @Column(name = "DESCRIPTION") private String description;
 
