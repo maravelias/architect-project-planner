@@ -7,6 +7,7 @@ import eu.maravelias.architectprojectplanner.entity.Client;
 import eu.maravelias.architectprojectplanner.entity.Project;
 import eu.maravelias.architectprojectplanner.entity.Status;
 import eu.maravelias.architectprojectplanner.test_support.AuthenticatedAsAdmin;
+import eu.maravelias.architectprojectplanner.test_support.TestDataFactory;
 import io.jmix.core.DataManager;
 import jakarta.validation.ConstraintViolationException;
 import java.sql.Timestamp;
@@ -29,13 +30,15 @@ public class ClientTest {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    TestDataFactory testDataFactory;
+
     Client savedClient;
     Project savedProject;
 
     @Test
     void test_saveAndLoad() {
-        Client client = dataManager.create(Client.class);
-        client.setName("Test-Client-" + System.currentTimeMillis());
+        Client client = testDataFactory.newClient();
         client.setDescription("This is a test client.");
         savedClient = dataManager.save(client);
 
@@ -54,9 +57,7 @@ public class ClientTest {
 
     @Test
     void test_softDeleteClient() {
-        Client client = dataManager.create(Client.class);
-        client.setName("Test-Client-" + System.currentTimeMillis());
-        savedClient = dataManager.save(client);
+        savedClient = testDataFactory.newClient();
 
         dataManager.remove(savedClient);
 
@@ -74,14 +75,9 @@ public class ClientTest {
 
     @Test
     void test_deleteClientCascadesProjects() {
-        Client client = dataManager.create(Client.class);
-        client.setName("Test-Client-" + System.currentTimeMillis());
-        savedClient = dataManager.save(client);
-
-        Project project = dataManager.create(Project.class);
-        project.setClient(savedClient);
-        project.setProjectName("Test-Project-" + System.currentTimeMillis());
-        project.setStatus(Status.IN_PROGRESS);
+        savedClient = testDataFactory.newClient();
+        Project project = testDataFactory.newProject(savedClient, Status.IN_PROGRESS,
+                "Test-Project-" + System.currentTimeMillis());
         savedProject = dataManager.save(project);
 
         Client clientToRemove = dataManager.load(Client.class)

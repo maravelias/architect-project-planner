@@ -2,18 +2,20 @@ package eu.maravelias.architectprojectplanner.user;
 
 import eu.maravelias.architectprojectplanner.entity.User;
 import eu.maravelias.architectprojectplanner.test_support.AuthenticatedAsAdmin;
+import eu.maravelias.architectprojectplanner.test_support.TestDataFactory;
 import io.jmix.core.DataManager;
 import io.jmix.core.security.UserRepository;
+import jakarta.persistence.OptimisticLockException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
  * Sample integration test for the User entity.
@@ -27,20 +29,17 @@ public class UserTest {
     DataManager dataManager;
 
     @Autowired
-    PasswordEncoder passwordEncoder;
+    UserRepository userRepository;
 
     @Autowired
-    UserRepository userRepository;
+    TestDataFactory testDataFactory;
 
     User savedUser;
 
     @Test
     void test_saveAndLoad() {
-        // Create and save a new User
-        User user = dataManager.create(User.class);
-        user.setUsername("test-user-" + System.currentTimeMillis());
-        user.setPassword(passwordEncoder.encode("test-passwd"));
-        savedUser = dataManager.save(user);
+        User user = testDataFactory.newUser("test-user-" + System.currentTimeMillis(), "test-passwd");
+        savedUser = user;
 
         // Check the new user can be loaded
         User loadedUser = dataManager.load(User.class).id(user.getId()).one();
@@ -51,9 +50,28 @@ public class UserTest {
         assertThat(userDetails).isEqualTo(user);
     }
 
+    @Test
+    void test_optimisticLocking() {
+        savedUser = testDataFactory.newUser("test-user-lock-" + System.currentTimeMillis(), "test-passwd");
+
+        User first = dataManager.load(User.class).id(savedUser.getId()).one();
+        User second = dataManager.load(User.class).id(savedUser.getId()).one();
+
+        first.setFirstName("First-" + System.currentTimeMillis());
+        dataManager.save(first);
+
+        second.setLastName("Second-" + System.currentTimeMillis());
+        assertThatThrownBy(() -> dataManager.save(second))
+                .isInstanceOf(OptimisticLockException.class);
+    }
+
     @AfterEach
     void tearDown() {
-        if (savedUser != null)
-            dataManager.remove(savedUser);
+        if (savedUser != null) {
+            dataManager.load(User.class)
+                    .id(savedUser.getId())
+                    .optional()
+                    .ifPresent(dataManager::remove);
+        }
     }
 }

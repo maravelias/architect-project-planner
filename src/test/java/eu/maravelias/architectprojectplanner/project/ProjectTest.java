@@ -7,6 +7,7 @@ import eu.maravelias.architectprojectplanner.entity.Client;
 import eu.maravelias.architectprojectplanner.entity.Project;
 import eu.maravelias.architectprojectplanner.entity.Status;
 import eu.maravelias.architectprojectplanner.test_support.AuthenticatedAsAdmin;
+import eu.maravelias.architectprojectplanner.test_support.TestDataFactory;
 import io.jmix.core.DataManager;
 import jakarta.persistence.OptimisticLockException;
 import jakarta.persistence.PersistenceException;
@@ -32,13 +33,16 @@ public class ProjectTest {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    TestDataFactory testDataFactory;
+
     Client savedClient;
     Project savedProject;
 
     @Test
     void test_saveLoadUpdate() {
-        savedClient = newClient();
-        Project project = newProject(savedClient);
+        savedClient = testDataFactory.newClient();
+        Project project = testDataFactory.newProject(savedClient);
         savedProject = dataManager.save(project);
 
         Project loadedProject = dataManager.load(Project.class).id(savedProject.getId()).one();
@@ -55,8 +59,8 @@ public class ProjectTest {
 
     @Test
     void test_projectNameIsMandatory() {
-        savedClient = newClient();
-        Project project = newProject(savedClient);
+        savedClient = testDataFactory.newClient();
+        Project project = testDataFactory.newProject(savedClient);
         project.setProjectName(null);
 
         assertThatThrownBy(() -> dataManager.save(project))
@@ -65,8 +69,8 @@ public class ProjectTest {
 
     @Test
     void test_statusIsMandatory() {
-        savedClient = newClient();
-        Project project = newProject(savedClient);
+        savedClient = testDataFactory.newClient();
+        Project project = testDataFactory.newProject(savedClient);
         project.setStatus(null);
 
         assertThatThrownBy(() -> dataManager.save(project))
@@ -87,8 +91,8 @@ public class ProjectTest {
 
     @Test
     void test_deleteProjectDoesNotDeleteClient() {
-        savedClient = newClient();
-        savedProject = dataManager.save(newProject(savedClient));
+        savedClient = testDataFactory.newClient();
+        savedProject = dataManager.save(testDataFactory.newProject(savedClient));
 
         dataManager.remove(savedProject);
 
@@ -106,8 +110,8 @@ public class ProjectTest {
 
     @Test
     void test_optimisticLocking() {
-        savedClient = newClient();
-        savedProject = dataManager.save(newProject(savedClient));
+        savedClient = testDataFactory.newClient();
+        savedProject = dataManager.save(testDataFactory.newProject(savedClient));
 
         Project first = dataManager.load(Project.class).id(savedProject.getId()).one();
         Project second = dataManager.load(Project.class).id(savedProject.getId()).one();
@@ -130,17 +134,4 @@ public class ProjectTest {
         }
     }
 
-    private Client newClient() {
-        Client client = dataManager.create(Client.class);
-        client.setName("Test-Client-" + System.currentTimeMillis());
-        return dataManager.save(client);
-    }
-
-    private Project newProject(Client client) {
-        Project project = dataManager.create(Project.class);
-        project.setClient(client);
-        project.setProjectName("Test-Project-" + System.currentTimeMillis());
-        project.setStatus(Status.NOT_STARTED);
-        return project;
-    }
 }
