@@ -18,8 +18,8 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 
 @JmixEntity
-@Table(name = "APP_WEEKLY_CAPACITY")
-@Entity(name = "app_WeeklyCapacity")
+@Table(name = "WEEKLY_CAPACITY")
+@Entity(name = "weeklyCapacity")
 public class WeeklyCapacity {
     @JmixGeneratedValue @Column(name = "ID", nullable = false) @Id private UUID id;
 
