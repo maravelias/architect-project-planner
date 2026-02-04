@@ -1,4 +1,8 @@
 [![CI-Tests](https://github.com/maravelias/architect-project-planner/actions/workflows/ci.yml/badge.svg)](https://github.com/maravelias/architect-project-planner/actions/workflows/ci.yml)
+![Java](https://img.shields.io/badge/Java-21-007396?logo=java&logoColor=white)
+![Gradle](https://img.shields.io/badge/Gradle-8.x-02303A?logo=gradle&logoColor=white)
+![Code Size](https://img.shields.io/github/languages/code-size/maravelias/architect-project-planner)
+![License](https://img.shields.io/github/license/maravelias/architect-project-planner)
 
 # Architect Project Planner
 
@@ -45,3 +49,13 @@ If you want to use local HSQLDB instead, disable the `dev` profile or override `
 ### Frontend
 
 Vaadin manages frontend tooling. `package.json` is pinned by Vaadin 24 and should not be manually upgraded.
+
+## Licensing
+
+This project is dual-licensed:
+
+- **Business Source License (BSL)** — free for internal production use
+- **Commercial License** — required for resale, SaaS, or external services
+
+If you wish to use this software commercially or provide it as a service,
+please contact us for a commercial license.
