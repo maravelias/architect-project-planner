@@ -1,6 +1,7 @@
 [![CI-Tests](https://github.com/maravelias/architect-project-planner/actions/workflows/ci.yml/badge.svg)](https://github.com/maravelias/architect-project-planner/actions/workflows/ci.yml)
 ![Java](https://img.shields.io/badge/Java-21-007396?logo=java&logoColor=white)
 ![Gradle](https://img.shields.io/badge/Gradle-8.x-02303A?logo=gradle&logoColor=white)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/maravelias/architect-project-planner/badge)](https://scorecard.dev/viewer/?uri=github.com/maravelias/architect-project-planner)
 
 
 # Architect Project Planner
