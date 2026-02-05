@@ -30,6 +30,29 @@
 			<column name="ID" type="UUID">
 				<constraints nullable="false" primaryKey="true" primaryKeyName="PK_DELIVERABLE"/>
 			</column>
+			<column name="ESTIMATED_EFFORT" type="bigint"/>
+			<column name="PROJECT_ID" type="UUID">
+				<constraints nullable="false"/>
+			</column>
+			<column name="PHASE_ID" type="UUID"/>
+			<column name="NAME" type="VARCHAR(255)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="DESCRIPTION" type="CLOB">
+				<constraints nullable="false"/>
+			</column>
+			<column name="COMPLETION_CRITERIA" type="CLOB">
+				<constraints nullable="false"/>
+			</column>
+			<column name="OWNER_ID" type="UUID">
+				<constraints nullable="false"/>
+			</column>
+			<column name="PRIORITY" type="VARCHAR(255)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="STATUS" type="VARCHAR(255)">
+				<constraints nullable="false"/>
+			</column>
 			<column name="VERSION" type="INT">
 				<constraints nullable="false"/>
 			</column>
@@ -45,6 +68,16 @@
 		<createTable tableName="PHASE">
 			<column name="ID" type="UUID">
 				<constraints nullable="false" primaryKey="true" primaryKeyName="PK_PHASE"/>
+			</column>
+			<column name="NAME" type="VARCHAR(255)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="DESCRIPTION" type="VARCHAR(255)"/>
+			<column name="STATUS" type="VARCHAR(255)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="PROJECT_ID" type="UUID">
+				<constraints nullable="false"/>
 			</column>
 			<column name="VERSION" type="INT">
 				<constraints nullable="false"/>
@@ -134,6 +167,41 @@
 		</createTable>
 	</changeSet>
 	<changeSet id="8" author="app">
+		<createIndex indexName="IDX_DELIVERABLE_OWNER" tableName="DELIVERABLE">
+			<column name="OWNER_ID"/>
+		</createIndex>
+
+		<addForeignKeyConstraint baseColumnNames="OWNER_ID" baseTableName="DELIVERABLE"
+								 constraintName="FK_DELIVERABLE_ON_OWNER" referencedColumnNames="ID"
+								 referencedTableName="APP_USER"/>
+	</changeSet>
+	<changeSet id="9" author="app">
+		<createIndex indexName="IDX_DELIVERABLE_PHASE" tableName="DELIVERABLE">
+			<column name="PHASE_ID"/>
+		</createIndex>
+
+		<addForeignKeyConstraint baseColumnNames="PHASE_ID" baseTableName="DELIVERABLE"
+								 constraintName="FK_DELIVERABLE_ON_PHASE" referencedColumnNames="ID"
+								 referencedTableName="PHASE"/>
+	</changeSet>
+	<changeSet id="10" author="app">
+		<createIndex indexName="IDX_DELIVERABLE_PROJECT" tableName="DELIVERABLE">
+			<column name="PROJECT_ID"/>
+		</createIndex>
+
+		<addForeignKeyConstraint baseColumnNames="PROJECT_ID" baseTableName="DELIVERABLE"
+								 constraintName="FK_DELIVERABLE_ON_PROJECT" referencedColumnNames="ID"
+								 referencedTableName="PROJECT"/>
+	</changeSet>
+	<changeSet id="11" author="app">
+		<createIndex indexName="IDX_PHASE_PROJECT" tableName="PHASE">
+			<column name="PROJECT_ID"/>
+		</createIndex>
+
+		<addForeignKeyConstraint baseColumnNames="PROJECT_ID" baseTableName="PHASE" constraintName="FK_PHASE_ON_PROJECT"
+								 referencedColumnNames="ID" referencedTableName="PROJECT"/>
+	</changeSet>
+	<changeSet id="12" author="app">
 		<createIndex indexName="IDX_PROJECT_CLIENT" tableName="PROJECT">
 			<column name="CLIENT_ID"/>
 		</createIndex>

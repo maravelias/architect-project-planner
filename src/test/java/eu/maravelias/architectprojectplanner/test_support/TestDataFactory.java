@@ -3,6 +3,7 @@ package eu.maravelias.architectprojectplanner.test_support;
 import eu.maravelias.architectprojectplanner.entity.Client;
 import eu.maravelias.architectprojectplanner.entity.Deliverable;
 import eu.maravelias.architectprojectplanner.entity.Phase;
+import eu.maravelias.architectprojectplanner.entity.Priority;
 import eu.maravelias.architectprojectplanner.entity.Project;
 import eu.maravelias.architectprojectplanner.entity.Status;
 import eu.maravelias.architectprojectplanner.entity.Task;
@@ -68,7 +69,21 @@ public class TestDataFactory {
     }
 
     public Deliverable newDeliverable() {
+        Client client = newClient();
+        Project project = newProject(client);
+        if (entityStates.isNew(project)) {
+            project = dataManager.save(project);
+        }
+        User owner = newUser("deliverable-owner-" + System.currentTimeMillis(), "test-password");
+
         Deliverable deliverable = dataManager.create(Deliverable.class);
+        deliverable.setProject(project);
+        deliverable.setName("Test-Deliverable-" + System.currentTimeMillis());
+        deliverable.setDescription("Test deliverable description");
+        deliverable.setCompletionCriteria("Test completion criteria");
+        deliverable.setOwner(owner);
+        deliverable.setPriority(Priority.NORMAL);
+        deliverable.setStatus(Status.NOT_STARTED);
         return dataManager.save(deliverable);
     }
 

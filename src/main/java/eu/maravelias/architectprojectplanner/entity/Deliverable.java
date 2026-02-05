@@ -51,7 +51,7 @@ public class Deliverable {
 
     @Column(name = "COMPLETION_CRITERIA", nullable = false) @Lob @NotNull private String completionCriteria;
 
-    @OnDeleteInverse(DeletePolicy.UNLINK) @OnDelete(DeletePolicy.UNLINK) @JoinColumn(name = "OWNER_ID", nullable = false) @Composition @NotNull @OneToOne(fetch = FetchType.LAZY, optional = false) private User owner;
+    @OnDeleteInverse(DeletePolicy.DENY) @JoinColumn(name = "OWNER_ID", nullable = false) @NotNull @OneToOne(fetch = FetchType.LAZY, optional = false) private User owner;
 
     @Column(name = "PRIORITY", nullable = false) @NotNull private String priority;
 

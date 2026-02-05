@@ -30,6 +30,9 @@ public class BasicEntitiesTest {
 
     Task savedTask;
     Deliverable savedDeliverable;
+    Project savedDeliverableProject;
+    Client savedDeliverableClient;
+    User savedDeliverableOwner;
     Phase savedPhase;
     Project savedPhaseProject;
     Client savedPhaseClient;
@@ -51,6 +54,9 @@ public class BasicEntitiesTest {
     @Test
     void test_deliverableCrudAndSoftDelete() {
         savedDeliverable = testDataFactory.newDeliverable();
+        savedDeliverableProject = savedDeliverable.getProject();
+        savedDeliverableClient = savedDeliverableProject == null ? null : savedDeliverableProject.getClient();
+        savedDeliverableOwner = savedDeliverable.getOwner();
 
         Deliverable loaded = dataManager.load(Deliverable.class).id(savedDeliverable.getId()).one();
         assertThat(loaded).isEqualTo(savedDeliverable);
@@ -105,6 +111,15 @@ public class BasicEntitiesTest {
         }
         if (savedDeliverable != null) {
             jdbcTemplate.update("delete from DELIVERABLE where ID = ?", savedDeliverable.getId());
+        }
+        if (savedDeliverableProject != null) {
+            jdbcTemplate.update("delete from PROJECT where ID = ?", savedDeliverableProject.getId());
+        }
+        if (savedDeliverableClient != null) {
+            jdbcTemplate.update("delete from CLIENT where ID = ?", savedDeliverableClient.getId());
+        }
+        if (savedDeliverableOwner != null) {
+            jdbcTemplate.update("delete from APP_USER where ID = ?", savedDeliverableOwner.getId());
         }
         if (savedPhase != null) {
             jdbcTemplate.update("delete from PHASE where ID = ?", savedPhase.getId());
