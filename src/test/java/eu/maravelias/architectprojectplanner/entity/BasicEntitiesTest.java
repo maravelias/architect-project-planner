@@ -31,6 +31,8 @@ public class BasicEntitiesTest {
     Task savedTask;
     Deliverable savedDeliverable;
     Phase savedPhase;
+    Project savedPhaseProject;
+    Client savedPhaseClient;
     WeeklyCapacity savedWeeklyCapacity;
     TimeLog savedTimeLog;
 
@@ -61,6 +63,8 @@ public class BasicEntitiesTest {
     @Test
     void test_phaseCrudAndSoftDelete() {
         savedPhase = testDataFactory.newPhase();
+        savedPhaseProject = savedPhase.getProject();
+        savedPhaseClient = savedPhaseProject == null ? null : savedPhaseProject.getClient();
 
         Phase loaded = dataManager.load(Phase.class).id(savedPhase.getId()).one();
         assertThat(loaded).isEqualTo(savedPhase);
@@ -104,6 +108,12 @@ public class BasicEntitiesTest {
         }
         if (savedPhase != null) {
             jdbcTemplate.update("delete from PHASE where ID = ?", savedPhase.getId());
+        }
+        if (savedPhaseProject != null) {
+            jdbcTemplate.update("delete from PROJECT where ID = ?", savedPhaseProject.getId());
+        }
+        if (savedPhaseClient != null) {
+            jdbcTemplate.update("delete from CLIENT where ID = ?", savedPhaseClient.getId());
         }
         if (savedWeeklyCapacity != null) {
             jdbcTemplate.update("delete from WEEKLY_CAPACITY where ID = ?", savedWeeklyCapacity.getId());

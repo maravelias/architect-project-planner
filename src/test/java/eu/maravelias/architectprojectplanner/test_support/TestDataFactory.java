@@ -10,6 +10,7 @@ import eu.maravelias.architectprojectplanner.entity.TimeLog;
 import eu.maravelias.architectprojectplanner.entity.User;
 import eu.maravelias.architectprojectplanner.entity.WeeklyCapacity;
 import io.jmix.core.DataManager;
+import io.jmix.core.EntityStates;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -18,10 +19,13 @@ import org.springframework.stereotype.Component;
 public class TestDataFactory {
 
     private final DataManager dataManager;
+    private final EntityStates entityStates;
     private final PasswordEncoder passwordEncoder;
 
-    public TestDataFactory(DataManager dataManager, ObjectProvider<PasswordEncoder> passwordEncoderProvider) {
+    public TestDataFactory(DataManager dataManager, EntityStates entityStates,
+                           ObjectProvider<PasswordEncoder> passwordEncoderProvider) {
         this.dataManager = dataManager;
+        this.entityStates = entityStates;
         this.passwordEncoder = passwordEncoderProvider.getIfAvailable();
     }
 
@@ -69,7 +73,23 @@ public class TestDataFactory {
     }
 
     public Phase newPhase() {
+        Client client = newClient();
+        Project project = newProject(client);
+        return newPhase(project);
+    }
+
+    public Phase newPhase(Project project) {
+        Project savedProject = project;
+        if (savedProject.getClient() != null && entityStates.isNew(savedProject.getClient())) {
+            savedProject.setClient(dataManager.save(savedProject.getClient()));
+        }
+        if (entityStates.isNew(savedProject)) {
+            savedProject = dataManager.save(savedProject);
+        }
         Phase phase = dataManager.create(Phase.class);
+        phase.setProject(savedProject);
+        phase.setName("Test-Phase-" + System.currentTimeMillis());
+        phase.setStatus(Status.NOT_STARTED);
         return dataManager.save(phase);
     }
 
