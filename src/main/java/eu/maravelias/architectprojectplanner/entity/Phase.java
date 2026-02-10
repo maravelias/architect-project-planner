@@ -39,6 +39,8 @@ public class Phase {
 
     @Column(name = "DESCRIPTION") private String description;
 
+    @Column(name = "ORDER_INDEX") private Integer orderIndex;
+
     @Column(name = "STATUS", nullable = false) @NotNull private String status;
 
     @OnDeleteInverse(DeletePolicy.DENY) @OnDelete(DeletePolicy.UNLINK) @JoinColumn(name = "PROJECT_ID", nullable = false) @Composition @NotNull @OneToOne(fetch = FetchType.LAZY, optional = false) private Project project;
@@ -56,6 +58,10 @@ public class Phase {
     @DeletedBy @Column(name = "DELETED_BY") private String deletedBy;
 
     @DeletedDate @Column(name = "DELETED_DATE") private OffsetDateTime deletedDate;
+
+    public Integer getOrderIndex() {return orderIndex;}
+
+    public void setOrderIndex(Integer orderIndex) {this.orderIndex = orderIndex;}
 
     public Project getProject() {return project;}
 
