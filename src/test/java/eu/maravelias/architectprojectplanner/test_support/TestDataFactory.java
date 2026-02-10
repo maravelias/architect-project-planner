@@ -65,6 +65,10 @@ public class TestDataFactory {
 
     public Task newTask() {
         Task task = dataManager.create(Task.class);
+        Deliverable deliverable = newDeliverable();
+        task.setDeliverable(deliverable);
+        task.setName("Test-Task-" + System.currentTimeMillis());
+        task.setStatus(Status.NOT_STARTED);
         return dataManager.save(task);
     }
 

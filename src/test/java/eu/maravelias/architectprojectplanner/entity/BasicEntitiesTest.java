@@ -29,6 +29,10 @@ public class BasicEntitiesTest {
     TestDataFactory testDataFactory;
 
     Task savedTask;
+    Deliverable savedTaskDeliverable;
+    Project savedTaskDeliverableProject;
+    Client savedTaskDeliverableClient;
+    User savedTaskDeliverableOwner;
     Deliverable savedDeliverable;
     Project savedDeliverableProject;
     Client savedDeliverableClient;
@@ -42,11 +46,18 @@ public class BasicEntitiesTest {
     @Test
     void test_taskCrudAndSoftDelete() {
         savedTask = testDataFactory.newTask();
+        savedTaskDeliverable = savedTask.getDeliverable();
+        savedTaskDeliverableProject = savedTaskDeliverable == null ? null : savedTaskDeliverable.getProject();
+        savedTaskDeliverableClient = savedTaskDeliverableProject == null ? null : savedTaskDeliverableProject.getClient();
+        savedTaskDeliverableOwner = savedTaskDeliverable == null ? null : savedTaskDeliverable.getOwner();
 
         Task loaded = dataManager.load(Task.class).id(savedTask.getId()).one();
         assertThat(loaded).isEqualTo(savedTask);
         assertThat(loaded.getCreatedDate()).isNotNull();
         assertThat(loaded.getCreatedBy()).isNotNull();
+        assertThat(loaded.getDeliverable()).isNotNull();
+        assertThat(loaded.getName()).isNotNull();
+        assertThat(loaded.getStatus()).isNotNull();
 
         assertSoftDelete(Task.class, "TASK", savedTask.getId());
     }
@@ -108,6 +119,18 @@ public class BasicEntitiesTest {
     void tearDown() {
         if (savedTask != null) {
             jdbcTemplate.update("delete from TASK where ID = ?", savedTask.getId());
+        }
+        if (savedTaskDeliverable != null) {
+            jdbcTemplate.update("delete from DELIVERABLE where ID = ?", savedTaskDeliverable.getId());
+        }
+        if (savedTaskDeliverableProject != null) {
+            jdbcTemplate.update("delete from PROJECT where ID = ?", savedTaskDeliverableProject.getId());
+        }
+        if (savedTaskDeliverableClient != null) {
+            jdbcTemplate.update("delete from CLIENT where ID = ?", savedTaskDeliverableClient.getId());
+        }
+        if (savedTaskDeliverableOwner != null) {
+            jdbcTemplate.update("delete from APP_USER where ID = ?", savedTaskDeliverableOwner.getId());
         }
         if (savedDeliverable != null) {
             jdbcTemplate.update("delete from DELIVERABLE where ID = ?", savedDeliverable.getId());
