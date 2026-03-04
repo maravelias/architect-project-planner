@@ -3,6 +3,7 @@
 
     <menu id="application" title="msg://eu.maravelias.architectprojectplanner/menu.application.title" opened="true">
         <item view="app_User.list" title="msg://eu.maravelias.architectprojectplanner.view.user/UserListView.title"/>
-    </menu>
+		<item view="client.list" title="msg://eu.maravelias.architectprojectplanner.view.client/clientListView.title"/>
+	</menu>
 
 </menu-config>
